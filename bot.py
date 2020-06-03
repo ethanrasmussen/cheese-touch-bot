@@ -105,10 +105,5 @@ async def await_help(ctx):
     embed = discord.Embed(title='Help', description=desc, url="https://github.com/ethanrasmussen/cheese-touch-bot")
     await ctx.send(embed=embed)
 
-# test
-@bot.command(name='test')
-async def await_test(ctx):
-    await ctx.send('TEST!')
-
 # run the bot
 bot.run(TOKEN.strip())
