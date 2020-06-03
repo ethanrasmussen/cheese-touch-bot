@@ -35,6 +35,9 @@ async def on_message(message):
 cheesetouch_holder: discord.User = INITIAL_CHEESETOUCH_HOLDER
 def get_ctholder():
     return cheesetouch_holder
+def change_ctholder(new_ct_holder):
+    cheesetouch_holder = new_ct_holder
+
 
 # initialize dictionary of users crossing fingers
 # FORMAT: discord.User : Timestamp of last time fingers crossed (unix style)
@@ -56,6 +59,7 @@ async def await_poke(ctx, arg: discord.User):
         # else, they're the new cheesetouch holder!
         else:
             cheesetouch_holder = arg
+            change_ctholder(cheesetouch_holder)
             await ctx.send(f"{ctx.author} passed the cheese-touch to {cheesetouch_holder}!")
     else:
         await ctx.send(f"Hey {ctx.author}! You can't do that! You don't have the cheese touch!")
@@ -63,7 +67,7 @@ async def await_poke(ctx, arg: discord.User):
 # whois command
 @bot.command(name='whois', aliases=['who is'])
 async def await_whois(ctx):
-    await ctx.send(f"Currently, {cheesetouch_holder} has the cheese touch!")
+    await ctx.send(f"Currently, {get_ctholder()} has the cheese touch!")
 
 # cross command
 @bot.command(name='cross', aliases=['cross fingers'])
