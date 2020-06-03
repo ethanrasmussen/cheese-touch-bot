@@ -7,12 +7,10 @@ import discord
 
 # discord bot token & guild ID (server ID)
 TOKEN = token
-GUILDID = guild_id # TODO: actually utilize this var
 INITIAL_CHEESETOUCH_HOLDER = initial_ctholder
 
 # init bot
 bot = commands.Bot(command_prefix=('cheesetouch ', 'cheese ', 'Cheese ', 'Cheesetouch ', 'ct ', 'CT '), case_insensitive=True, help_command=None)
-guild = bot.get_guild(GUILDID) # TODO: implement this
 
 # when bot online
 @bot.event
@@ -47,7 +45,6 @@ async def await_poke(ctx, arg: discord.User):
     global cheesetouch_holder
     # check if message sender is the current cheesetouch holder
     if str(ctx.author) == str(cheesetouch_holder):
-        # TODO: check if user is in server?
         finger_timestamp = crossed_fingers.get(arg)
         if finger_timestamp == None:
             finger_timestamp = 0
