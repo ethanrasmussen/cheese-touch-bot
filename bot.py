@@ -46,7 +46,7 @@ crossed_fingers = dict()
 async def await_poke(ctx, arg: discord.User):
     global cheesetouch_holder
     # check if message sender is the current cheesetouch holder
-    if str(ctx.author) == cheesetouch_holder:
+    if str(ctx.author) == str(cheesetouch_holder):
         # TODO: check if user is in server?
         finger_timestamp = crossed_fingers.get(arg)
         if finger_timestamp == None:
