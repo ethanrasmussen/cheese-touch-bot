@@ -104,7 +104,7 @@ async def await_help(ctx):
            'ct poke [user]: Passes the cheese-touch\n' \
            'ct whois: Tells who the current cheese-touch holder is\n' \
            'ct cross: Cross your fingers for 60 seconds\n' \
-           'ct init [user]: Starts the game initially'
+           'ct init [user]: Starts the game initially (DEPRECATED)'
     embed = discord.Embed(title='Help', description=desc, url="https://github.com/ethanrasmussen/cheese-touch-bot")
     await ctx.send(embed=embed)
 
