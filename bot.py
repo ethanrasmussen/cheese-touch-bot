@@ -1,18 +1,18 @@
 # basic dependencies
 import time
-from assets import token, guild_id
+from assets import token, guild_id, initial_ctholder
 # discord.py dependencies
 from discord.ext import commands
 import discord
 
 # discord bot token & guild ID (server ID)
 TOKEN = token
-GUILDID = guild_id
-INITIAL_CHEESETOUCH_HOLDER = 'Eraz#6502'
+GUILDID = guild_id # TODO: actually utilize this var
+INITIAL_CHEESETOUCH_HOLDER = initial_ctholder
 
 # init bot
 bot = commands.Bot(command_prefix=('cheesetouch ', 'cheese ', 'Cheese ', 'Cheesetouch ', 'ct ', 'CT '), case_insensitive=True, help_command=None)
-guild = bot.get_guild(GUILDID)
+guild = bot.get_guild(GUILDID) # TODO: implement this
 
 # when bot online
 @bot.event
@@ -31,13 +31,10 @@ async def on_message(message):
         return
     await bot.process_commands(message)
 
-# initialize CT holder w/ 'None' value
-cheesetouch_holder = INITIAL_CHEESETOUCH_HOLDER
-def get_ctholder():
-    return cheesetouch_holder
-def change_ctholder(new_ct_holder):
-    cheesetouch_holder = new_ct_holder
-
+# initialize CT holder w/ 'None' value, unless an initial value is specified
+cheesetouch_holder = None
+if INITIAL_CHEESETOUCH_HOLDER != None:
+    cheesetouch_holder = INITIAL_CHEESETOUCH_HOLDER
 
 # initialize dictionary of users crossing fingers
 # FORMAT: discord.User : Timestamp of last time fingers crossed (unix style)
@@ -49,7 +46,7 @@ crossed_fingers = dict()
 async def await_poke(ctx, arg: discord.User):
     global cheesetouch_holder
     # check if message sender is the current cheesetouch holder
-    if str(ctx.author) == get_ctholder():
+    if str(ctx.author) == cheesetouch_holder:
         # TODO: check if user is in server?
         finger_timestamp = crossed_fingers.get(arg)
         if finger_timestamp == None:
@@ -59,9 +56,7 @@ async def await_poke(ctx, arg: discord.User):
             await ctx.send(f"Nice try! But {arg} still has their fingers crossed!")
         # else, they're the new cheesetouch holder!
         else:
-            print(cheesetouch_holder)
             cheesetouch_holder = arg
-            print(cheesetouch_holder)
             await ctx.send(f"{ctx.author} passed the cheese-touch to {cheesetouch_holder}!")
     else:
         await ctx.send(f"Hey {ctx.author}! You can't do that! You don't have the cheese touch!")
@@ -85,20 +80,18 @@ async def await_cross(ctx):
         crossed_fingers[ctx.author] = int(time.time())
         # send message
         await ctx.send(f"{ctx.author} has crossed their fingers! They're immune from the cheese touch for 60 seconds!")
-    print(crossed_fingers)
 
-# init command (DEPRECATED)
+# init command
 @bot.command(name='init', aliases=['start', 'begin', 'initialize'])
 async def await_init(ctx, user: discord.User):
-    print(user)
+    global cheesetouch_holder
     # allow command if there is no CT holder
-    if get_ctholder() == None:
+    if cheesetouch_holder == None:
         # set the specified user as the initial cheese touch holder
         cheesetouch_holder = user
         # send message
         await ctx.send(f"Let the games begin... {cheesetouch_holder} is the first cheese-touch holder!")
     else:
-        cheesetouch_holder = get_ctholder()
         await ctx.send(f"C'mon man... You can't do that! {cheesetouch_holder} already has the cheese-touch!")
 
 # help command
