@@ -29,11 +29,16 @@ async def await_poke(message, ctx, arg):
         arg = arg.replace(">", "")
         arg = arg.replace("@", "")
         cheesetouch_holder_id = str(arg)
-        ctx.send(f"{message.author} passed the cheese-touch to {cheesetouch_holder_id}!")
+        cheesetouch_user = discord.User(id=int(cheesetouch_holder_id))
+        ctx.send(f"{message.author} passed the cheese-touch to {cheesetouch_user}!")
     else:
         ctx.send(f"Hey {message.author}! You can't do that! You don't have the cheese touch!")
 
-# TODO whois command
+# whois command
+@bot.command(name='whois', aliases=['who is'])
+async def await_whois(ctx):
+    cheesetouch_user = discord.User(id=int(cheesetouch_holder_id))
+    ctx.send(f"Currently, {cheesetouch_user}")
 
 # TODO cross command
 
