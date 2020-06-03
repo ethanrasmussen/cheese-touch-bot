@@ -1,7 +1,7 @@
 # Cheese Touch Bot
 This bot adds a simple cheese touch game to your Discord server!
 
-#IMG HERE
+[Example of Cheese Touch Bot in action!](https://github.com/ethanrasmussen/cheese-touch-bot/blob/master/cheesetouch.PNG)
 
 ## To add to your server:
 WIP
