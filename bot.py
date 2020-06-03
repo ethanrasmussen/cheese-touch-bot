@@ -9,6 +9,9 @@ import discord
 TOKEN = token
 GUILDID = guild_id
 
+# send command output in console?
+CONSOLE_OUTPUT = True
+
 # init bot
 bot = commands.Bot(command_prefix=('cheesetouch', 'cheese', 'Cheese', 'Cheesetouch', 'ct', 'CT'), case_insensitive=True, help_command=None)
 guild: discord.Guild
@@ -25,6 +28,11 @@ async def on_ready():
     # set status
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name='Cheese Touch'))
 
+# parse every msg for cmds
+@bot.event
+async def on_message(message):
+    await bot.process_commands(message)
+
 # initialize CT holder w/ 'None' value
 cheesetouch_holder: discord.User = None
 
@@ -36,6 +44,9 @@ crossed_fingers = dict()
 # accounts for 2 scenarios: pokee has fingers crossed; and pokee not in server
 @bot.command(name='poke', aliases=['touch'])
 async def await_poke(message, ctx, arg: discord.User):
+    # send console output
+    if CONSOLE_OUTPUT:
+        print(f"Received 'poke' command from user {message.author}")
     # check if message sender is the current cheesetouch holder
     if message.author.id == cheesetouch_holder.id:
         # is user in server?
@@ -56,12 +67,16 @@ async def await_poke(message, ctx, arg: discord.User):
 
 # whois command
 @bot.command(name='whois', aliases=['who is'])
-async def await_whois(ctx):
+async def await_whois(ctx, message):
+    if CONSOLE_OUTPUT:
+        print(f"Received 'whois' command from user {message.author}")
     ctx.send(f"Currently, {cheesetouch_holder} has the cheese touch!")
 
 # cross command
 @bot.command(name='cross', aliases=['cross fingers'])
 async def await_cross(ctx, message):
+    if CONSOLE_OUTPUT:
+        print(f"Received 'cross' command from user {message.author}")
     # if user is the cheese touch holder, mock them
     if guild.get_member(message.author.id) == cheesetouch_holder.id:
         ctx.send(f"Really {message.author}? Nice try... but you already have the cheese touch!")
@@ -74,7 +89,9 @@ async def await_cross(ctx, message):
 
 # init command
 @bot.command(name='init', aliases=['start', 'begin', 'initialize'])
-async def await_init(ctx, arg: discord.User):
+async def await_init(ctx, message, arg: discord.User):
+    if CONSOLE_OUTPUT:
+        print(f"Received 'init' command from user {message.author}")
     # allow command if there is no CT holder
     if cheesetouch_holder == None:
         # set the specified user as the initial cheese touch holder
@@ -86,7 +103,9 @@ async def await_init(ctx, arg: discord.User):
 
 # help command
 @bot.command(name='help', aliases=['info'])
-async def await_help(ctx):
+async def await_help(ctx, message):
+    if CONSOLE_OUTPUT:
+        print(f"Received 'help' command from user {message.author}")
     desc = 'To use commands: cheesetouch [command] [args]\n' \
            'ct poke [user]: Passes the cheese-touch\n' \
            'ct whois: Tells who the current cheese-touch holder is\n' \
@@ -94,8 +113,6 @@ async def await_help(ctx):
            'ct init [user]: Starts the game initially'
     embed = discord.Embed(title='Help', description=desc, url="https://github.com/ethanrasmussen/cheese-touch-bot")
     await ctx.send(embed=embed)
-
-
 
 
 # run the bot
