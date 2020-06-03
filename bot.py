@@ -65,12 +65,12 @@ async def await_poke(ctx, arg: discord.User):
         await ctx.send(f"Hey {ctx.author}! You can't do that! You don't have the cheese touch!")
 
 # whois command
-@bot.command(name='whois', aliases=['who is'])
+@bot.command(name='whois', aliases=['who'])
 async def await_whois(ctx):
     await ctx.send(f"Currently, {get_ctholder()} has the cheese touch!")
 
 # cross command
-@bot.command(name='cross', aliases=['cross fingers'])
+@bot.command(name='cross', aliases=['crossfingers'])
 async def await_cross(ctx):
     # if user is the cheese touch holder, mock them
     if str(ctx.author) == cheesetouch_holder:
