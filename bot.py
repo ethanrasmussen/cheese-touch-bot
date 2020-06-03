@@ -32,7 +32,7 @@ async def on_message(message):
     await bot.process_commands(message)
 
 # initialize CT holder w/ 'None' value
-cheesetouch_holder: discord.User = INITIAL_CHEESETOUCH_HOLDER
+cheesetouch_holder = INITIAL_CHEESETOUCH_HOLDER
 def get_ctholder():
     return cheesetouch_holder
 def change_ctholder(new_ct_holder):
@@ -47,6 +47,7 @@ crossed_fingers = dict()
 # accounts for 2 scenarios: pokee has fingers crossed; and pokee not in server
 @bot.command(name='poke', aliases=['touch'])
 async def await_poke(ctx, arg: discord.User):
+    global cheesetouch_holder
     # check if message sender is the current cheesetouch holder
     if str(ctx.author) == get_ctholder():
         # TODO: check if user is in server?
@@ -58,8 +59,9 @@ async def await_poke(ctx, arg: discord.User):
             await ctx.send(f"Nice try! But {arg} still has their fingers crossed!")
         # else, they're the new cheesetouch holder!
         else:
+            print(cheesetouch_holder)
             cheesetouch_holder = arg
-            change_ctholder(cheesetouch_holder)
+            print(cheesetouch_holder)
             await ctx.send(f"{ctx.author} passed the cheese-touch to {cheesetouch_holder}!")
     else:
         await ctx.send(f"Hey {ctx.author}! You can't do that! You don't have the cheese touch!")
@@ -67,11 +69,13 @@ async def await_poke(ctx, arg: discord.User):
 # whois command
 @bot.command(name='whois', aliases=['who'])
 async def await_whois(ctx):
-    await ctx.send(f"Currently, {get_ctholder()} has the cheese touch!")
+    global cheesetouch_holder
+    await ctx.send(f"Currently, {cheesetouch_holder} has the cheese touch!")
 
 # cross command
 @bot.command(name='cross', aliases=['crossfingers'])
 async def await_cross(ctx):
+    global cheesetouch_holder
     # if user is the cheese touch holder, mock them
     if str(ctx.author) == cheesetouch_holder:
         await ctx.send(f"Really {ctx.author}? Nice try... but you already have the cheese touch!")
