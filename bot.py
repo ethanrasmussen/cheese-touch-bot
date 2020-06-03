@@ -59,13 +59,18 @@ async def await_poke(message, ctx, arg: discord.User):
 async def await_whois(ctx):
     ctx.send(f"Currently, {cheesetouch_holder} has the cheese touch!")
 
-# TODO cross command
+# cross command
 @bot.command(name='cross', aliases=['cross fingers'])
 async def await_cross(ctx, message):
-    # add author to dictionary of crossed fingers
-    crossed_fingers[message.author] = int(time.time())
-    # send message
-    ctx.send(f"{message.author} has crossed their fingers! They're immune from the cheese touch for 60 seconds!")
+    # if user is the cheese touch holder, mock them
+    if guild.get_member(message.author.id) == cheesetouch_holder.id:
+        ctx.send(f"Really {message.author}? Nice try... but you already have the cheese touch!")
+    # else, cross their fingers
+    else:
+        # add author to dictionary of crossed fingers
+        crossed_fingers[message.author] = int(time.time())
+        # send message
+        ctx.send(f"{message.author} has crossed their fingers! They're immune from the cheese touch for 60 seconds!")
 
 # TODO init command
 
