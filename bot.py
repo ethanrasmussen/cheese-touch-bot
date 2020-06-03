@@ -82,7 +82,7 @@ async def await_cross(ctx):
         await ctx.send(f"{ctx.author} has crossed their fingers! They're immune from the cheese touch for 60 seconds!")
 
 # init command
-@bot.command(name='init', aliases=['start', 'begin', 'initialize'])
+@bot.command(name='init', aliases=['start', 'begin'])
 async def await_init(ctx, user: discord.User):
     global cheesetouch_holder
     # allow command if there is no CT holder
