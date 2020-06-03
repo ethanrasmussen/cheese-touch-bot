@@ -1,6 +1,9 @@
+# basic dependencies
+import time
+from token import token
+# discord.py dependencies
 from discord.ext import commands
 import discord
-from token import token
 
 # discord bot token
 TOKEN = token
@@ -22,6 +25,7 @@ cheesetouch_holder: discord.User = None
 
 # initialize dictionary of users crossing fingers
 # FORMAT: discord.User : Timestamp of last time fingers crossed (unix style)
+crossed_fingers = dict()
 
 # poke command
 # TODO: account for 2 scenarios: pokee has fingers crossed; and pokee not in server
@@ -43,6 +47,12 @@ async def await_whois(ctx):
     ctx.send(f"Currently, {cheesetouch_holder} has the cheese touch!")
 
 # TODO cross command
+@bot.command(name='cross', aliases=['cross fingers'])
+async def await_cross(ctx, message):
+    # add author to dictionary of crossed fingers
+    crossed_fingers[message.author] = int(time.time())
+    # send message
+    ctx.send(f"{message.author} has crossed their fingers! They're immune from the cheese touch for 60 seconds!")
 
 # TODO init command
 
