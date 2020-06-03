@@ -80,7 +80,16 @@ async def await_init(ctx, arg: discord.User):
     # send message
     ctx.send(f"Let the games begin... {cheesetouch_holder} is the first cheese-touch holder!")
 
-# TODO help command
+# help command
+@bot.command(name='help', aliases=['info'])
+async def await_help(ctx):
+    desc = 'To use commands: cheesetouch [command] [args]\n' \
+           'ct poke [user]: Passes the cheese-touch\n' \
+           'ct whois: Tells who the current cheese-touch holder is\n' \
+           'ct cross: Cross your fingers for 60 seconds\n' \
+           'ct init [user]: Starts the game initially'
+    embed = discord.Embed(title='Help', description=desc, url="https://github.com/ethanrasmussen/cheese-touch-bot")
+    await ctx.send(embed=embed)
 
 
 
