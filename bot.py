@@ -1,12 +1,13 @@
 # basic dependencies
 import time
-from token import token
+from assets import token, guild_id
 # discord.py dependencies
 from discord.ext import commands
 import discord
 
-# discord bot token
+# discord bot token & guild ID (server ID)
 TOKEN = token
+GUILDID = guild_id
 
 # init bot
 bot = commands.Bot(command_prefix=('cheesetouch', 'cheese', 'Cheese', 'Cheesetouch', 'ct', 'CT'), case_insensitive=True, help_command=None)
@@ -33,10 +34,9 @@ crossed_fingers = dict()
 async def await_poke(message, ctx, arg: discord.User):
     # check if message sender is the current cheesetouch holder
     if str(message.author.id) == str(cheesetouch_holder.id):
-        arg = arg.replace("<", "")
-        arg = arg.replace(">", "")
-        arg = arg.replace("@", "")
-        cheesetouch_holder = str(arg.id)
+        # TODO is user in server?
+        # TODO if yes, are they crossed?
+        cheesetouch_holder = arg
         ctx.send(f"{message.author} passed the cheese-touch to {cheesetouch_holder}!")
     else:
         ctx.send(f"Hey {message.author}! You can't do that! You don't have the cheese touch!")
