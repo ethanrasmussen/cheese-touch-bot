@@ -11,13 +11,17 @@ GUILDID = guild_id
 
 # init bot
 bot = commands.Bot(command_prefix=('cheesetouch', 'cheese', 'Cheese', 'Cheesetouch', 'ct', 'CT'), case_insensitive=True, help_command=None)
+guild: discord.Guild
 
 # when bot online
 @bot.event
 async def on_ready():
+    # console output
     print('Bot online.')
     print(f'Name: {bot.user.name}')
     print(f'ID: {bot.user.id}')
+    # join guild/server
+    guild = bot.get_guild(GUILDID)
     # set status
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name='Cheese Touch'))
 
@@ -29,15 +33,24 @@ cheesetouch_holder: discord.User = None
 crossed_fingers = dict()
 
 # poke command
-# TODO: account for 2 scenarios: pokee has fingers crossed; and pokee not in server
+# accounts for 2 scenarios: pokee has fingers crossed; and pokee not in server
 @bot.command(name='poke', aliases=['touch'])
 async def await_poke(message, ctx, arg: discord.User):
     # check if message sender is the current cheesetouch holder
     if str(message.author.id) == str(cheesetouch_holder.id):
-        # TODO is user in server?
-        # TODO if yes, are they crossed?
-        cheesetouch_holder = arg
-        ctx.send(f"{message.author} passed the cheese-touch to {cheesetouch_holder}!")
+        # is user in server?
+        if guild.get_member(arg.id) is not None:
+            # if yes, do they have their fingers crossed?
+            finger_timestamp = crossed_fingers.get(arg)
+            # if time since fingers crossed is 60s or less, they're safe
+            if int(time.time()) - finger_timestamp <= 60:
+                ctx.send(f"Nice try! But {arg} still has their fingers crossed!")
+            # else, they're the new cheesetouch holder!
+            else:
+                cheesetouch_holder = arg
+                ctx.send(f"{message.author} passed the cheese-touch to {cheesetouch_holder}!")
+        else:
+            ctx.send(f"Hey! You can't give the cheese touch to somebody not on the server!")
     else:
         ctx.send(f"Hey {message.author}! You can't do that! You don't have the cheese touch!")
 
