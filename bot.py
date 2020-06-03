@@ -37,7 +37,7 @@ crossed_fingers = dict()
 @bot.command(name='poke', aliases=['touch'])
 async def await_poke(message, ctx, arg: discord.User):
     # check if message sender is the current cheesetouch holder
-    if str(message.author.id) == str(cheesetouch_holder.id):
+    if message.author.id == cheesetouch_holder.id:
         # is user in server?
         if guild.get_member(arg.id) is not None:
             # if yes, do they have their fingers crossed?
@@ -72,7 +72,13 @@ async def await_cross(ctx, message):
         # send message
         ctx.send(f"{message.author} has crossed their fingers! They're immune from the cheese touch for 60 seconds!")
 
-# TODO init command
+# init command
+@bot.command(name='init', aliases=['start', 'begin', 'initialize'])
+async def await_init(ctx, arg: discord.User):
+    # set the specified user as the initial cheese touch holder
+    cheesetouch_holder = arg
+    # send message
+    ctx.send(f"Let the games begin... {cheesetouch_holder} is the first cheese-touch holder!")
 
 # TODO help command
 
